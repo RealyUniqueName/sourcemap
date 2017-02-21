@@ -1,0 +1,8 @@
+-cp src
+-cp test
+-main Test
+-D analyzer-optimize
+
+# -D php7
+# -php bin/php
+-neko bin/test.n
