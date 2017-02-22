@@ -25,6 +25,25 @@ abstract Mapping(Array<Int>) {
 		this = data;
 	}
 
+	public inline function getSourcePos (map:SourceMap, generatedLine:Int) : SourcePos {
+		var pos : SourcePos = {
+			generatedLine : generatedLine,
+			generatedColumn : generatedColumn
+		}
+		if (hasSource()) {
+			pos.originalLine = line + 1;
+			pos.originalColumn = column;
+			pos.source = map.sourceRoot + map.sources[source];
+			if (hasName()) {
+				pos.name = map.names[name];
+			}
+		}
+		return pos;
+	}
+
+	public inline function hasSource () : Bool return this.length > SOURCE;
+	public inline function hasLine () : Bool return this.length > LINE;
+	public inline function hasColumn () : Bool return this.length > COLUMN;
 	public inline function hasName () : Bool return this.length > NAME;
 
 	public inline function offsetGeneratedColumn (offset:Int) this[GENERATED_COLUMN] += offset;

@@ -2,6 +2,8 @@
 -cp test
 -main Test
 -D analyzer-optimize
+-resource test/data/test.map@test.map
+-resource test/data/expected.json@expected.json
 
 # -D php7
 # -php bin/php

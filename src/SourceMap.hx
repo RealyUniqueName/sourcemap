@@ -32,23 +32,18 @@ class SourceMap {
 	}
 
 	/**
-	 * Get position in original source file which was generated to `line` and `column` in compiled file.
+	 * Get position in original source file.
 	 * Returns `null` if provided `line` and/or `column` don't exist in compiled file.
+	 * @param line - `1`-based line number in generated file.
+	 * @param column - zero-based column number in generated file.
 	 */
 	public function originalPositionFor (line:Int, column:Int = 0) : Null<SourcePos> {
-		if (line < 0 || line >= mappings.length) return null;
+		if (line < 1 || line > mappings.length) return null;
 
 		var pos : SourcePos = null;
-		for (mapping in mappings[line]) {
+		for (mapping in mappings[line - 1]) {
 			if (mapping.generatedColumn <= column) {
-				pos = {
-					line : mapping.line,
-					column : mapping.column,
-					source : sourceRoot + sources[mapping.source]
-				}
-				if (mapping.hasName()) {
-					pos.name = names[mapping.name];
-				}
+				pos = mapping.getSourcePos(this, line);
 				break;
 			}
 		}
@@ -60,17 +55,9 @@ class SourceMap {
 	 * Invoke `callback` for each mapped position.
 	 */
 	public function eachMapping (callback:SourcePos->Void) {
-		for (l in 0...mappings.length) {
-			for (mapping in mappings[l]) {
-				var pos : SourcePos = {
-					line : mapping.line,
-					column : mapping.column,
-					source : sourceRoot + sources[mapping.source]
-				}
-				if (mapping.hasName()) {
-					pos.name = names[mapping.name];
-				}
-				callback(pos);
+		for (line in 0...mappings.length) {
+			for (mapping in mappings[line]) {
+				callback(mapping.getSourcePos(this, line + 1));
 			}
 		}
 	}
@@ -93,15 +80,17 @@ class SourceMap {
 		var encoded = data.mappings.split(';');
 		//help some platforms to pre-alloc array
 		mappings[encoded.length - 1] = null;
+
+		var previousSource = 0;
+		var previousLine = 0;
+		var previousColumn = 0;
+		var previousName = 0;
+
 		for (l in 0...encoded.length) {
 			mappings[l] = [];
 			if (encoded[l].length == 0) continue;
 
 			var previousGeneratedColumn = 0;
-			var previousSource = 0;
-			var previousLine = 0;
-			var previousColumn = 0;
-			var previousName = 0;
 
 			var segments = encoded[l].split(',');
 			mappings[l][segments.length - 1] = null;
@@ -110,17 +99,19 @@ class SourceMap {
 				var mapping = segments[s].decode();
 				mappings[l][s] = mapping;
 				mapping.offsetGeneratedColumn(previousGeneratedColumn);
-				mapping.offsetSource(previousSource);
-				mapping.offsetLine(previousLine);
-				mapping.offsetColumn(previousColumn);
-				if (mapping.hasName()) {
-					mapping.offsetName(previousName);
-					previousName = mapping.name;
+				if (mapping.hasSource()) {
+					mapping.offsetSource(previousSource);
+					mapping.offsetLine(previousLine);
+					mapping.offsetColumn(previousColumn);
+					if (mapping.hasName()) {
+						mapping.offsetName(previousName);
+						previousName = mapping.name;
+					}
+					previousLine = mapping.line;
+					previousSource = mapping.source;
+					previousColumn = mapping.column;
 				}
 				previousGeneratedColumn = mapping.generatedColumn;
-				previousLine = mapping.line;
-				previousSource = mapping.source;
-				previousColumn = mapping.column;
 			}
 		}
 	}
