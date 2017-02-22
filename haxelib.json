@@ -1,0 +1,12 @@
+{
+	"name"         : "sourcemap",
+	"url"          : "https://github.com/RealyUniqueName/sourcemap",
+	"license"      : "MIT",
+	"tags"         : ["sourcemap", "source", "map", "mapping", "debug"],
+	"description"  : "Source maps parser",
+	"version"      : "1.0.0",
+	"releasenote"  : "Initial release",
+	"classPath"    : "src",
+	"contributors" : ["RealyUniqueName"],
+	"dependencies" : {}
+}
