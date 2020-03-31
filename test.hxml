@@ -8,4 +8,4 @@
 
 # -D php7
 # -php bin/php
--neko bin/test.n
+# -neko bin/test.n

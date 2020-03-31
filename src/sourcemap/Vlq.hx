@@ -19,15 +19,18 @@ class Vlq {
 		return 63; // `/`
 	}
 
-	static public inline function decode (vlq:String):Mapping {
-		var data = [0, 0, 0, 0];
+	static public inline function decode (vlq:String):Array<Int> {
+		var data = [];
 		var index = -1;
-
-		for (i in 0...data.length) {
+		var lastIndex = vlq.length - 1;
+		while(index < lastIndex) {
 			var value = 0;
 			var shift = 0;
 			var digit, masked;
 			do {
+				if(index >= lastIndex) {
+					throw 'Failed to parse vlq: $vlq';
+				}
 				digit = base64Decode(vlq.fastCodeAt(++index));
 				masked = digit & MASK;
 				value += masked << shift;
@@ -35,9 +38,9 @@ class Vlq {
 			} while(digit != masked);
 
 			//the least significant bit in VLQ is used to store a sign
-			data[i] = (value & 1 == 1 ? -(value >> 1) : value >> 1);
+			data.push(value & 1 == 1 ? -(value >> 1) : value >> 1);
 		}
 
-		return new Mapping(data);
+		return data;
 	}
 }

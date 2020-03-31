@@ -24,4 +24,6 @@ class MappingTest extends Test {
 			Assert.equals(expected[i].name, actual[i].name);
 		}
 	}
+
+	
 }

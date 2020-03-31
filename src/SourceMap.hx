@@ -96,7 +96,7 @@ class SourceMap {
 			mappings[l][segments.length - 1] = null;
 
 			for (s in 0...segments.length) {
-				var mapping = segments[s].decode();
+				var mapping = new Mapping(segments[s].decode());
 				mappings[l][s] = mapping;
 				mapping.offsetGeneratedColumn(previousGeneratedColumn);
 				if (mapping.hasSource()) {

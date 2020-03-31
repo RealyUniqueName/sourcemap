@@ -8,14 +8,11 @@ using sourcemap.Vlq;
 class VlqTest extends Test {
 
 	public function testDecode () {
-		var vlq = 'AAKkB';
-
-		var result = vlq.decode();
-
-		Assert.equals(0, result.source);
-		Assert.equals(0, result.generatedColumn);
-		Assert.equals(5, result.line);
-		Assert.equals(18, result.column);
-		Assert.isFalse(result.hasName());
+		Assert.same([0, 0, 5, 18], 'AAKkB'.decode());
+		Assert.same([0], 'A'.decode());
+		Assert.same([0, 0, 1, -1, 2], 'ABCDE'.decode());
 	}
+
+	// public function testDecode_arbitraryLength () {
+	// }
 }
