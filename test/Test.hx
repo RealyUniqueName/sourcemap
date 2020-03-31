@@ -1,12 +1,12 @@
 package;
 
-import haxe.unit.TestRunner;
+import utest.UTest;
 
 class Test {
 	static public function main () {
-		var runner = new TestRunner();
-		runner.add(new VlqTest());
-		runner.add(new MappingTest());
-		runner.run();
+		UTest.run([
+			new VlqTest(),
+			new MappingTest()
+		]);
 	}
 }

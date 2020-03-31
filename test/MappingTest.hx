@@ -1,11 +1,12 @@
 package;
 
 import sourcemap.SourcePos;
-import haxe.unit.TestCase;
+import utest.Test;
+import utest.Assert;
 import haxe.Resource;
 import haxe.Json;
 
-class MappingTest extends TestCase {
+class MappingTest extends Test {
 	public function testMapping () {
 		var map = new SourceMap(Resource.getString('test.map'));
 
@@ -13,14 +14,14 @@ class MappingTest extends TestCase {
 		map.eachMapping(actual.push);
 		var expected:Array<SourcePos> = Json.parse(Resource.getString('expected.json'));
 
-		assertEquals(expected.length, actual.length);
+		Assert.equals(expected.length, actual.length);
 		for (i in 0...expected.length) {
-			assertEquals(expected[i].generatedColumn, actual[i].generatedColumn);
-			assertEquals(expected[i].generatedLine, actual[i].generatedLine);
-			assertEquals(expected[i].originalColumn, actual[i].originalColumn);
-			assertEquals(expected[i].originalLine, actual[i].originalLine);
-			assertEquals(expected[i].source, actual[i].source);
-			assertEquals(expected[i].name, actual[i].name);
+			Assert.equals(expected[i].generatedColumn, actual[i].generatedColumn);
+			Assert.equals(expected[i].generatedLine, actual[i].generatedLine);
+			Assert.equals(expected[i].originalColumn, actual[i].originalColumn);
+			Assert.equals(expected[i].originalLine, actual[i].originalLine);
+			Assert.equals(expected[i].source, actual[i].source);
+			Assert.equals(expected[i].name, actual[i].name);
 		}
 	}
 }

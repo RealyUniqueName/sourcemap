@@ -1,5 +1,6 @@
 -cp src
 -cp test
+-lib utest
 -main Test
 -D analyzer-optimize
 -resource test/data/test.map@test.map
