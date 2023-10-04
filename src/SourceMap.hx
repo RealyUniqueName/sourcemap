@@ -67,17 +67,17 @@ class SourceMap {
 	 * @param json - Raw content of source map file
 	 */
 	function parse (json:String) {
-		var data : Data = Json.parse(json);
+		var data : Dynamic = Json.parse(json);
 		if (data == null) throw "Failed to parse source map data.";
 
-		version = data.version;
-		file = data.file;
-		sourceRoot = (data.sourceRoot == null ? '' : data.sourceRoot);
-		sources = data.sources;
-		sourcesContent = (data.sourcesContent == null ? [] : data.sourcesContent);
-		names = data.names;
+		version = Reflect.field(data, "version");
+		file = Reflect.field(data, "file");
+		sourceRoot = (!Reflect.hasField(data, "sourceRoot") ? '' : Reflect.field(data, "sourceRoot"));
+		sources = Reflect.field(data, "sources");
+		sourcesContent = (!Reflect.hasField(data, "sourcesContent") ? [] : Reflect.field(data, "sourcesContent"));
+		names = Reflect.field(data, "names");
 
-		var encoded = data.mappings.split(';');
+		var encoded = Reflect.field(data, "mappings").split(';');
 		//help some platforms to pre-alloc array
 		mappings[encoded.length - 1] = null;
 
@@ -96,7 +96,7 @@ class SourceMap {
 			mappings[l][segments.length - 1] = null;
 
 			for (s in 0...segments.length) {
-				var mapping = new Mapping(segments[s].decode());
+				var mapping = new Mapping(Vlq.decode(segments[s]));
 				mappings[l][s] = mapping;
 				mapping.offsetGeneratedColumn(previousGeneratedColumn);
 				if (mapping.hasSource()) {
