@@ -1,3 +1,4 @@
 bin/*
 *.zip
 .vscode
+.haxelib

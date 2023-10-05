@@ -26,10 +26,9 @@ abstract Mapping(Array<Int>) {
 	}
 
 	public inline function getSourcePos (map:SourceMap, generatedLine:Int) : SourcePos {
-		var pos : SourcePos = {
-			generatedLine : generatedLine,
-			generatedColumn : generatedColumn
-		}
+		var pos = new SourcePos();
+		pos.generatedLine = generatedLine;
+		pos.generatedColumn = generatedColumn;
 		if (hasSource()) {
 			pos.originalLine = line + 1;
 			pos.originalColumn = column;
