@@ -4,8 +4,8 @@
 	"license"      : "MIT",
 	"tags"         : ["sourcemap", "source", "map", "mapping", "debug"],
 	"description"  : "Source maps parser",
-	"version"      : "1.0.0",
-	"releasenote"  : "Initial release",
+	"version"      : "1.1.0",
+	"releasenote"  : "Support advanced js minification",
 	"classPath"    : "src",
 	"contributors" : ["RealyUniqueName"],
 	"dependencies" : {}
