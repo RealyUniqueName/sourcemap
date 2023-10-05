@@ -68,7 +68,7 @@ class SourceMap {
 	 */
 	function parse (json:String) {
 		var data : Data = Json.parse(json);
-		if (data == null) throw "Failed to parse source map data.";
+		if (data == null) throw new SourceMapException("Failed to parse source map data.");
 
 		version = data.version;
 		file = data.file;

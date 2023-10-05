@@ -29,7 +29,7 @@ class Vlq {
 			var digit, masked;
 			do {
 				if(index >= lastIndex) {
-					throw 'Failed to parse vlq: $vlq';
+					throw new SourceMapException('Failed to parse vlq: $vlq');
 				}
 				digit = base64Decode(vlq.fastCodeAt(++index));
 				masked = digit & MASK;
